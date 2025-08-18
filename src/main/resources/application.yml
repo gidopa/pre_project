@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: pre_project
+  profiles:
+    active: local
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/pre_test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        # show_sql: true
+        format_sql: true
+  sql:
+    init:
+      mode: always
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.springframework.cache: TRACE
+  org.springframework.cache.interceptor.CacheInterceptor: TRACE

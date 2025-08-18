@@ -2,6 +2,7 @@ package com.greencat.pre_project.domain.entity;
 
 import static lombok.AccessLevel.PROTECTED;
 
+import com.greencat.pre_project.application.dto.user.UserCreateRequest;
 import com.greencat.pre_project.domain.enums.UserRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,4 +48,13 @@ public class Users extends BaseEntity {
   @Column(name = "todo_list")
   @OneToMany(mappedBy = "user")
   private List<Todo> todoList = new ArrayList<>();
+
+  public static Users createRequestToEntity(UserCreateRequest request) {
+    return Users.builder()
+        .username(request.getUsername())
+        .password(request.getPassword())
+        .email(request.getEmail())
+        .userRole(UserRole.USER)
+        .build();
+  }
 }

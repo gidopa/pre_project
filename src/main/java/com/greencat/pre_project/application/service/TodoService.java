@@ -3,7 +3,6 @@ package com.greencat.pre_project.application.service;
 import com.greencat.pre_project.application.dto.todo.TodoCreateRequestDto;
 import com.greencat.pre_project.application.dto.todo.TodoResponseDto;
 import com.greencat.pre_project.application.dto.todo.TodoUpdateRequestDto;
-import com.greencat.pre_project.application.mapper.TodoMapper;
 import com.greencat.pre_project.domain.entity.Todo;
 import com.greencat.pre_project.domain.entity.Users;
 import com.greencat.pre_project.exception.error_code.TodoErrorCode;
@@ -27,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class TodoService {
 
   private final TodoRepository todoRepository;
-  private final TodoMapper todoMapper;
   private final UserRepository userRepository;
 
   @CacheEvict(cacheNames = "todoAllCache", allEntries = true)
@@ -37,7 +35,7 @@ public class TodoService {
         .orElseThrow(() -> new PreTaskException(UserErrorCode.NOT_FOUND));
     Todo todo = Todo.create(requestDto, user);
     Todo savedTodo = todoRepository.save(todo);
-    return todoMapper.changeEntityToResponse(savedTodo);
+    return TodoResponseDto.changeEntityToResponse(savedTodo);
   }
 
   @CacheEvict(cacheNames = "todoAllCache", allEntries = true)
@@ -45,7 +43,7 @@ public class TodoService {
     Todo todo = todoRepository.findById(todoId)
         .orElseThrow(() -> new PreTaskException(TodoErrorCode.NOT_FOUND));
     todo.updateTodo(requestDto);
-    return todoMapper.changeEntityToResponse(todo);
+    return TodoResponseDto.changeEntityToResponse(todo);
   }
 
   @CacheEvict(cacheNames = "todoAllCache", allEntries = true)
@@ -64,6 +62,6 @@ public class TodoService {
         .orElseThrow(() -> new PreTaskException(UserErrorCode.NOT_FOUND));
     List<Todo> todos = todoRepository.findAllByUser(user.getUserId());
     return todos.stream()
-        .map(todoMapper::changeEntityToResponse).collect(Collectors.toList());
+        .map(TodoResponseDto::changeEntityToResponse).collect(Collectors.toList());
   }
 }

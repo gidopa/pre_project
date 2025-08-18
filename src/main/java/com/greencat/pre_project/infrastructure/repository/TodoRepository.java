@@ -10,6 +10,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface TodoRepository extends JpaRepository<Todo, UUID> {
 
-  @Query("select t from Todo t where t.user.userId = :userId")
+  @Query("select t from Todo t left join fetch t.subTasks st where t.user.userId = :userId")
   List<Todo> findAllByUser(@Param("userId") UUID userId);
 }

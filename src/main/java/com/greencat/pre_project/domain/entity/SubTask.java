@@ -26,7 +26,7 @@ import org.hibernate.annotations.SQLRestriction;
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 @Builder
-@SQLRestriction("is_delete is false")
+@SQLRestriction("is_deleted is false")
 @Table(name = "subtask")
 public class SubTask extends BaseEntity {
 

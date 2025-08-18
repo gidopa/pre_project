@@ -9,7 +9,7 @@ public record UserResponseDto (UUID userId,
                                String password,
                                String email,
                                UserRole userRole){
-  public static UserResponseDto fromUser(Users user) {
+  public static UserResponseDto changeEntityToResponse(Users user) {
     return new UserResponseDto(
       user.getUserId(),
       user.getUsername(),

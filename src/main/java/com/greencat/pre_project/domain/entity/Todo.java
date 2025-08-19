@@ -1,6 +1,6 @@
 package com.greencat.pre_project.domain.entity;
 
-import static lombok.AccessLevel.*;
+import static lombok.AccessLevel.PROTECTED;
 
 import com.greencat.pre_project.application.dto.todo.TodoCreateRequestDto;
 import com.greencat.pre_project.application.dto.todo.TodoUpdateRequestDto;
@@ -13,14 +13,11 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +26,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.SQLRestriction;
 
+@Slf4j
 @Entity
 @Getter
 @AllArgsConstructor
@@ -102,6 +101,17 @@ public class Todo extends BaseEntity {
         .dueTime(requestDto.getDueTime())
         .user(user)
         .build();
+  }
+
+  public void addSubTask(SubTask subTask) {
+    this.subTasks.add(subTask);
+    subTask.setTodo(this);
+    log.info("add sub task 호출");
+  }
+
+  public void removeSubTask(SubTask subTask) {
+    this.subTasks.remove(subTask);
+    subTask.setTodo(null);
   }
 
 }

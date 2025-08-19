@@ -2,6 +2,8 @@ package com.greencat.pre_project.domain.entity;
 
 import static lombok.AccessLevel.PROTECTED;
 
+import com.greencat.pre_project.application.dto.subtask.SubtaskCreateRequest;
+import com.greencat.pre_project.application.dto.subtask.SubtaskUpdateRequest;
 import com.greencat.pre_project.domain.enums.TodoStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,8 +52,38 @@ public class SubTask extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private TodoStatus status;
 
-  private void addSubTask(Todo todo) {
+  public void updateSubtask(SubtaskUpdateRequest request, Todo todo) {
+    if(request.getDescription() != null) {
+      this.description = request.getDescription();
+    }
+
+    if(request.getStatus() != null) {
+      this.status = request.getStatus();
+    }
+
+    if(request.getTitle() != null) {
+      this.title = request.getTitle();
+    }
+
+    if(request.getTodoId() != null) {
+      this.todo = todo;
+    }
+  }
+
+  public void softDelete() {
+    this.isDeleted = true;
+  }
+
+  public static SubTask create(SubtaskCreateRequest requestDto, Todo todo){
+    return SubTask.builder()
+        .title(requestDto.getTitle())
+        .description(requestDto.getDescription())
+        .status(requestDto.getStatus())
+        .todo(null)
+        .build();
+  }
+
+  public void setTodo(Todo todo) {
     this.todo = todo;
-    todo.getSubTasks().add(this);
   }
 }

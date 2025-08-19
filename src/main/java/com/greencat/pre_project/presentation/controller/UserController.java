@@ -3,7 +3,6 @@ package com.greencat.pre_project.presentation.controller;
 import com.greencat.pre_project.application.dto.user.UserCreateRequest;
 import com.greencat.pre_project.application.dto.user.UserResponseDto;
 import com.greencat.pre_project.application.service.UserService;
-import com.greencat.pre_project.domain.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

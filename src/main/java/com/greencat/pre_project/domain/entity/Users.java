@@ -1,7 +1,5 @@
 package com.greencat.pre_project.domain.entity;
 
-import static lombok.AccessLevel.PROTECTED;
-
 import com.greencat.pre_project.application.dto.user.UserCreateRequest;
 import com.greencat.pre_project.domain.enums.UserRole;
 import jakarta.persistence.Column;
@@ -25,7 +23,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
 @Builder
 @SQLRestriction("is_deleted is false")
 public class Users extends BaseEntity {

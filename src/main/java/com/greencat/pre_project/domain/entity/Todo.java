@@ -1,7 +1,5 @@
 package com.greencat.pre_project.domain.entity;
 
-import static lombok.AccessLevel.PROTECTED;
-
 import com.greencat.pre_project.application.dto.todo.TodoCreateRequestDto;
 import com.greencat.pre_project.application.dto.todo.TodoUpdateRequestDto;
 import com.greencat.pre_project.domain.enums.TodoPriority;
@@ -33,7 +31,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
 @Builder
 @SQLRestriction("is_deleted is false") // soft delete 정책으로 삭제되지 않은 것만 검색
 public class Todo extends BaseEntity {

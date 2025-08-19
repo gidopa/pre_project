@@ -1,8 +1,8 @@
 package com.greencat.pre_project.presentation.controller;
 
 import com.greencat.pre_project.application.dto.todo.TodoCreateRequestDto;
-import com.greencat.pre_project.application.dto.todo.TodoResponseDto;
 import com.greencat.pre_project.application.dto.todo.TodoResponseWithSubtask;
+import com.greencat.pre_project.application.dto.todo.TodoStatusUpdateRequest;
 import com.greencat.pre_project.application.dto.todo.TodoUpdateRequestDto;
 import com.greencat.pre_project.application.service.TodoService;
 import java.util.List;
@@ -29,16 +29,23 @@ public class TodoController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public TodoResponseDto createTodo(@RequestBody TodoCreateRequestDto requestDto) {
+  public TodoResponseWithSubtask createTodo(@RequestBody TodoCreateRequestDto requestDto) {
     return todoService.createTodo(requestDto);
   }
 
   @PatchMapping("/{todoId}")
   @ResponseStatus(HttpStatus.OK)
-  public TodoResponseDto updateTodo(
+  public TodoResponseWithSubtask updateTodo(
       @RequestBody TodoUpdateRequestDto requestDto,
       @PathVariable UUID todoId) {
     return todoService.updateTodo(requestDto, todoId);
+  }
+
+  @PatchMapping("/{todoId}/status")
+  @ResponseStatus(HttpStatus.OK)
+  public TodoResponseWithSubtask updateTodoStatus(@PathVariable UUID todoId, @RequestBody TodoStatusUpdateRequest request) {
+    String username = "admin";
+    return todoService.updateTodoStatus(todoId, request, username);
   }
 
   @DeleteMapping("/{todoId}")

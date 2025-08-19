@@ -2,14 +2,17 @@ package com.greencat.pre_project.application.service;
 
 import com.greencat.pre_project.application.dto.subtask.SubtaskCreateRequest;
 import com.greencat.pre_project.application.dto.subtask.SubtaskResponse;
+import com.greencat.pre_project.application.dto.subtask.SubtaskStatusUpdateRequest;
 import com.greencat.pre_project.application.dto.subtask.SubtaskUpdateRequest;
 import com.greencat.pre_project.domain.entity.SubTask;
 import com.greencat.pre_project.domain.entity.Todo;
+import com.greencat.pre_project.domain.enums.TodoStatus;
 import com.greencat.pre_project.exception.error_code.SubtaskErrorCode;
 import com.greencat.pre_project.exception.error_code.TodoErrorCode;
 import com.greencat.pre_project.exception.exception.PreTaskException;
 import com.greencat.pre_project.infrastructure.repository.SubtaskRepository;
 import com.greencat.pre_project.infrastructure.repository.TodoRepository;
+import jakarta.validation.constraints.NotBlank;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -69,6 +72,31 @@ public class SubtaskService {
   public SubtaskResponse getOneSubTask(UUID subtaskId) {
     SubTask subTask = subtaskRepository.findById(subtaskId)
         .orElseThrow(() -> new PreTaskException(SubtaskErrorCode.NOT_FOUND));
+    return SubtaskResponse.changeEntityToResponse(subTask);
+  }
+
+  public SubtaskResponse updateSubtaskStatus(UUID subtaskId, SubtaskStatusUpdateRequest request,
+      @NotBlank String username) {
+    SubTask subTask = subtaskRepository.findById(subtaskId)
+        .orElseThrow(() -> new PreTaskException(SubtaskErrorCode.NOT_FOUND));
+    subTask.updateSubtaskStatus(request.getStatus());
+    // todo 의 모든 subtask가 DONE 상태면 todo도 DONE으로 상태 변경
+    Todo todo = subTask.getTodo();
+    boolean allDone = todo.getSubTasks().stream()
+        .allMatch(st -> st.getStatus() == TodoStatus.DONE);
+
+    if(allDone){
+      if (todo.getStatus() != TodoStatus.DONE) {
+        todo.updateTodoStatus(TodoStatus.DONE);
+      }
+    } else {
+      if (todo.getStatus() == TodoStatus.DONE) {
+        todo.updateTodoStatus(TodoStatus.IN_PROGRESS);
+     }
+    }
+    cm.getCache("todoCache").evict(todo.getId());
+    cm.getCache("todoListCache").evict(username);
+
     return SubtaskResponse.changeEntityToResponse(subTask);
   }
 }

@@ -57,10 +57,6 @@ public class SubTask extends BaseEntity {
       this.description = request.getDescription();
     }
 
-    if(request.getStatus() != null) {
-      this.status = request.getStatus();
-    }
-
     if(request.getTitle() != null) {
       this.title = request.getTitle();
     }
@@ -68,6 +64,10 @@ public class SubTask extends BaseEntity {
     if(request.getTodoId() != null) {
       this.todo = todo;
     }
+  }
+
+  public void updateSubtaskStatus(TodoStatus updateStatus) {
+    this.status = updateStatus;
   }
 
   public void softDelete() {

@@ -1,8 +1,8 @@
 package com.greencat.pre_project.application.service;
 
 import com.greencat.pre_project.application.dto.todo.TodoCreateRequestDto;
-import com.greencat.pre_project.application.dto.todo.TodoResponseDto;
 import com.greencat.pre_project.application.dto.todo.TodoResponseWithSubtask;
+import com.greencat.pre_project.application.dto.todo.TodoStatusUpdateRequest;
 import com.greencat.pre_project.application.dto.todo.TodoUpdateRequestDto;
 import com.greencat.pre_project.domain.entity.Todo;
 import com.greencat.pre_project.domain.entity.Users;
@@ -29,24 +29,24 @@ public class TodoService {
   private final UserService userService;
   private final CacheManager cm;
 
-  public TodoResponseDto createTodo(TodoCreateRequestDto requestDto) {
+  public TodoResponseWithSubtask createTodo(TodoCreateRequestDto requestDto) {
     // Login 미구현으로 기본 admin 계정 이용
     Users user = userService.findUserByUsername("admin");
     Todo todo = Todo.create(requestDto, user);
     Todo savedTodo = todoRepository.save(todo);
     cm.getCache("todoListCache").evict(user.getUsername());
     cm.getCache("todoCache").put(todo.getId(), TodoResponseWithSubtask.changeEntityToResponse(todo));
-    return TodoResponseDto.changeEntityToResponse(savedTodo);
+    return TodoResponseWithSubtask.changeEntityToResponse(savedTodo);
   }
 
-  public TodoResponseDto updateTodo(TodoUpdateRequestDto requestDto, UUID todoId) {
+  public TodoResponseWithSubtask updateTodo(TodoUpdateRequestDto requestDto, UUID todoId) {
     Todo todo = todoRepository.findById(todoId)
         .orElseThrow(() -> new PreTaskException(TodoErrorCode.NOT_FOUND));
     Users user = userService.findUserByUsername("admin");
     todo.updateTodo(requestDto);
     cm.getCache("todoListCache").evict(user.getUsername());
     cm.getCache("todoCache").put(todo.getId(), TodoResponseWithSubtask.changeEntityToResponse(todo));
-    return TodoResponseDto.changeEntityToResponse(todo);
+    return TodoResponseWithSubtask.changeEntityToResponse(todo);
   }
 
 //  @CacheEvict(cacheNames = "todoAllCache", key="#todoId")
@@ -77,6 +77,17 @@ public class TodoService {
         .orElseThrow(() -> new PreTaskException(TodoErrorCode.NOT_FOUND));
 
     log.info("subtask 수 : {}", todo.getSubTasks().size());
+    return TodoResponseWithSubtask.changeEntityToResponse(todo);
+  }
+
+
+  public TodoResponseWithSubtask updateTodoStatus(UUID todoId, TodoStatusUpdateRequest request, String username) {
+    Users user = userService.findUserByUsername(username);
+    Todo todo = todoRepository.findByIdAndUserId(todoId, user.getUserId())
+        .orElseThrow(() -> new PreTaskException(TodoErrorCode.NOT_FOUND));
+    todo.updateTodoStatus(request.getStatus());
+    cm.getCache("todoListCache").evict(user.getUsername());
+    cm.getCache("todoCache").put(todo.getId(), TodoResponseWithSubtask.changeEntityToResponse(todo));
     return TodoResponseWithSubtask.changeEntityToResponse(todo);
   }
 }

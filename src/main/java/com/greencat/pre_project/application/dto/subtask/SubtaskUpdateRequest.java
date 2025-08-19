@@ -1,7 +1,6 @@
 package com.greencat.pre_project.application.dto.subtask;
 
 
-import com.greencat.pre_project.domain.enums.TodoStatus;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,5 +14,4 @@ public class SubtaskUpdateRequest {
   private UUID todoId;
   private String title;
   private String description;
-  private TodoStatus status;
 }

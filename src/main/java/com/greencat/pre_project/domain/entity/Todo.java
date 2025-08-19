@@ -71,10 +71,6 @@ public class Todo extends BaseEntity {
       this.description = request.getDescription();
     }
 
-    if(request.getStatus() != null) {
-      this.status = request.getStatus();
-    }
-
     if(request.getPriority() != null) {
       this.priority = request.getPriority();
     }
@@ -85,6 +81,14 @@ public class Todo extends BaseEntity {
 
     if(request.getTitle() != null) {
       this.title = request.getTitle();
+    }
+  }
+
+  public void updateTodoStatus(TodoStatus updateStatus) {
+    if(updateStatus == TodoStatus.DONE) {
+      this.status = TodoStatus.DONE;
+      this.getSubTasks().forEach(subTask -> {
+        subTask.updateSubtaskStatus(TodoStatus.DONE);});
     }
   }
 

@@ -2,6 +2,7 @@ package com.greencat.pre_project.presentation.controller;
 
 import com.greencat.pre_project.application.dto.subtask.SubtaskCreateRequest;
 import com.greencat.pre_project.application.dto.subtask.SubtaskResponse;
+import com.greencat.pre_project.application.dto.subtask.SubtaskStatusUpdateRequest;
 import com.greencat.pre_project.application.dto.subtask.SubtaskUpdateRequest;
 import com.greencat.pre_project.application.dto.todo.TodoResponseWithSubtask;
 import com.greencat.pre_project.application.service.SubtaskService;
@@ -52,6 +53,18 @@ public class SubtaskController {
     Users user = userService.findUserByUsername("admin");
     if(foundTodo.userId().equals(user.getUserId())) {
       return subtaskService.updateSubtask(subtaskId, request, user.getUsername());
+    }else{
+      throw new PreTaskException(SubtaskErrorCode.NOT_AUTHORIZED);
+    }
+  }
+
+  @PatchMapping("/{subtaskId}/status")
+  public SubtaskResponse updateSubtaskStatus(@PathVariable UUID subtaskId, @RequestBody SubtaskStatusUpdateRequest request) {
+    SubtaskResponse foundSubTask = subtaskService.getOneSubTask(subtaskId);
+    TodoResponseWithSubtask foundTodo = todoService.getOneTodo(foundSubTask.todoId());
+    Users user = userService.findUserByUsername("admin");
+    if(foundTodo.userId().equals(user.getUserId())) {
+      return subtaskService.updateSubtaskStatus(subtaskId, request, user.getUsername());
     }else{
       throw new PreTaskException(SubtaskErrorCode.NOT_AUTHORIZED);
     }

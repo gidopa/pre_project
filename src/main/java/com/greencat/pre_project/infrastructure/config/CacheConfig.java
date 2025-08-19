@@ -13,7 +13,7 @@ public class CacheConfig {
   // 운영에선 Redis 사용 가능
   @Bean
   public CacheManager caffeineCacheManager() {
-    var cm = new CaffeineCacheManager("todoAllCache");
+    var cm = new CaffeineCacheManager("todoCache", "todoListCache");
     cm.setCaffeine(com.github.benmanes.caffeine.cache.Caffeine.newBuilder()
         .maximumSize(10_000)
         .expireAfterWrite(java.time.Duration.ofMinutes(10))
@@ -21,3 +21,4 @@ public class CacheConfig {
     return cm;
   }
 }
+

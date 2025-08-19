@@ -34,4 +34,9 @@ public class UserService {
     }
 
   }
+
+  public Users findUserByUsername(String username) {
+    return userRepository.findByUsername(username)
+        .orElseThrow(() -> new PreTaskException(UserErrorCode.NOT_FOUND));
+  }
 }

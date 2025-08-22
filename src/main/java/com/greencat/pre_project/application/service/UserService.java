@@ -16,6 +16,7 @@ public class UserService {
 
   private final UserRepository userRepository;
 
+  //TODO password 암호화, Security를 이용한 로그인 구현 및 jwt 생성
   public UserResponseDto creatUser(UserCreateRequest request) {
     Users user = Users.createRequestToEntity(request);
     checkUsernameExists(user.getUsername());

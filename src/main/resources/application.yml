@@ -24,6 +24,12 @@ alert:
   slack:
     url: https://hooks.slack.com/services/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
 
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger
+
 logging.level:
   org.hibernate.SQL: debug
   org.springframework.cache: TRACE

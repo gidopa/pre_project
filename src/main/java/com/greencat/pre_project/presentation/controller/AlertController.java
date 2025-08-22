@@ -1,6 +1,7 @@
 package com.greencat.pre_project.presentation.controller;
 
 import com.greencat.pre_project.application.service.SlackService;
+import io.swagger.v3.oas.annotations.Operation;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.util.Map;
@@ -17,6 +18,7 @@ public class AlertController {
   private final SlackService slackService;
 
   // slack 연동 테스트용 controller 기본적으로 scheduler를 통해 자동 알림 발송
+  @Operation(summary = "알림 기능 강제 실행")
   @PostMapping("/run")
   public Map<String, Object> runOnce(
       @RequestParam(defaultValue = "Asia/Seoul") String zone,

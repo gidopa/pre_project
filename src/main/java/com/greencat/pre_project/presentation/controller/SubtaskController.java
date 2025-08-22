@@ -11,6 +11,7 @@ import com.greencat.pre_project.application.service.UserService;
 import com.greencat.pre_project.domain.entity.Users;
 import com.greencat.pre_project.exception.error_code.SubtaskErrorCode;
 import com.greencat.pre_project.exception.exception.PreTaskException;
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,7 @@ public class SubtaskController {
   private final SubtaskService subtaskService;
   private final UserService userService;
 
+  @Operation(summary = "Todo 하위 Subtask 생성")
   @PostMapping
   public SubtaskResponse createSubtask(@RequestBody SubtaskCreateRequest request) {
     // subtask에 대한 권한 검증
@@ -45,6 +47,7 @@ public class SubtaskController {
     }
   }
 
+  @Operation(summary = "Subtask 수정", description = "subtask 진행 상태 외 정보 수정")
   @PatchMapping("/{subtaskId}")
   public SubtaskResponse updateSubtask(@PathVariable UUID subtaskId, @RequestBody SubtaskUpdateRequest request) {
     // subtask에 대한 권한 검증
@@ -58,6 +61,7 @@ public class SubtaskController {
     }
   }
 
+  @Operation(summary = "subtask 진행 상태 수정")
   @PatchMapping("/{subtaskId}/status")
   public SubtaskResponse updateSubtaskStatus(@PathVariable UUID subtaskId, @RequestBody SubtaskStatusUpdateRequest request) {
     SubtaskResponse foundSubTask = subtaskService.getOneSubTask(subtaskId);
@@ -70,6 +74,7 @@ public class SubtaskController {
     }
   }
 
+  @Operation(summary = "subtask soft delete")
   @DeleteMapping("/{subtaskId}")
   public ResponseEntity<String> deleteSubtask(@PathVariable UUID subtaskId) {
     Users user = userService.findUserByUsername("admin");
@@ -78,6 +83,9 @@ public class SubtaskController {
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
+  // Subtask의 경우 Todo에서 하위 subtask 전체 조회를 하거나
+  // 단건 조회만 될거라고 예상해서 전체 조회 api 구현X
+  @Operation(summary = "subtask 단건 조회")
   @GetMapping("/{subtaskId}")
   public SubtaskResponse getAllSubtasks(@PathVariable UUID subtaskId) {
     return subtaskService.getOneSubTask(subtaskId);

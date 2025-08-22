@@ -70,6 +70,7 @@ public class TodoService {
         .map(TodoResponseWithSubtask::changeEntityToResponse).collect(Collectors.toList());
   }
 
+  // 필요 시, QueryDSL 이용, 검색 기능 추가 가능
   @Cacheable(cacheNames = "todoCache", key = "#todoId")
   public TodoResponseWithSubtask getOneTodo(UUID todoId) {
     Users user = userService.findUserByUsername("admin");

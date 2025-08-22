@@ -20,6 +20,10 @@ spring:
     init:
       mode: always
 
+alert:
+  slack:
+    url: https://hooks.slack.com/services/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
+
 logging.level:
   org.hibernate.SQL: debug
   org.springframework.cache: TRACE

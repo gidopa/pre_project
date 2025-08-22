@@ -40,14 +40,19 @@ api 이용 시 due date를 해당 시간으로 설정 후 호출 시 슬랙 채�
 
 ## 주요 사용 라이브러리
 - Spring Boot Starter Data JPA (spring-boot-starter-data-jpa)
-→ ORM 기반의 DB 접근을 단순화하고, 엔티티 중심 설계를 통해 생산성을 높이기 위해 사용.
+  - ORM 기반의 DB 접근을 단순화하고, 엔티티 중심 설계를 통해 생산성을 높이기 위해 사용.
 
 - Spring Boot Starter Validation (spring-boot-starter-validation)
-→ 요청 DTO 유효성 검증(예: @NotBlank, @Size 등)을 자동화하기 위해 사용.
+  -  요청 DTO 유효성 검증(예: @NotBlank, @Size 등)을 자동화하기 위해 사용.
 
 - Spring Boot Starter Cache + Caffeine (spring-boot-starter-cache, caffeine)
-→ Todo 및 Subtask 조회 시 성능 개선을 위해 캐싱 적용.
-→ Caffeine 은 로컬 캐싱에 적합하고, 정책(TTL, 최대 용량) 설정이 쉬워서 선택.
+  - Todo 및 Subtask 조회 시 성능 개선을 위해 캐싱 적용.
+  - Caffeine 은 로컬 캐싱에 적합하고, 정책(TTL, 최대 용량) 설정이 쉬워서 선택.
+
+- Spring Webflux
+  - Slack Webhook 호출은 단순 HTTP POST지만, 다수 요청 시 비동기 처리 효율이 필요했다.
+  - 동기식 RestTemplate 대비 리소스 사용량이 적고, 테스트/확장이 용이.
+  - 간단한 Builder 패턴으로 요청을 구성할 수 있어 Slack 같은 외부 API 연동에 적합.
 
 - p6spy (p6spy-spring-boot-starter)
 → SQL 로그를 보기 쉽게 출력해 디버깅 및 쿼리 최적화에 활용.

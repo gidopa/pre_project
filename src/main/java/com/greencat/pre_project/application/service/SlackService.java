@@ -28,12 +28,8 @@ public class SlackService {
     List<Todo> targets = todoRepository.findByDueTime(from, to);
     int count = 0;
     for (Todo t : targets) {
-      // 아이템 단위로 격리하여 실패 전파 차단
-      try {
         sendOneItem(t);
         count++;
-      } catch (Exception e) {
-      }
     }
     return count;
   }

@@ -36,6 +36,7 @@ dependencies {
 	testImplementation 'io.projectreactor:reactor-test'
 	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
+	testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'

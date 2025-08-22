@@ -9,7 +9,6 @@ import java.time.ZoneId;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -39,7 +38,7 @@ public class SlackService {
     return count;
   }
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional
   protected void sendOneItem(Todo todo) {
 
     String title = "⏰ TODO 마감 24시간 전 알림";
